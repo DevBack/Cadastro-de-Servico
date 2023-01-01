@@ -40,6 +40,12 @@ public class ServicoService {
 		servicoRepository.delete(servico);
 	}
 	
+	public void cancel(Long id) {
+		Servico servico = servicoRepository.findById(id).get();
+		servico.setStatus("Cancelado");
+		servicoRepository.saveAndFlush(servico);
+	}
+	
 	public List<Servico> findByStatusPendente () {
 		return servicoRepository.findByStatusPendente();
 	}

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,8 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.devback.servico.backend.entity.Servico;
 import com.devback.servico.backend.service.ServicoService;
-
-import jakarta.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("/servicos")
@@ -50,8 +49,14 @@ public class ServicoController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> delete(@PathParam("id") Long id) {
+	public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
 		servicoService.delete(id);
+		return ResponseEntity.ok().build();
+	}
+	
+	@PostMapping("/{id}")
+	public ResponseEntity<Void> cancel(@PathVariable("id") Long id) {
+		servicoService.cancel(id);
 		return ResponseEntity.ok().build();
 	}
 }
