@@ -25,7 +25,9 @@ function Servico() {
 
     function handleSubmit(event){
         event.preventDefault();
-        console.log(servico);
+        axios.post("http://localhost:8080/servicos/", servico).then(result=>{
+            console.log(result);
+        });
     }
 
   return (
