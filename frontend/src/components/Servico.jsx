@@ -6,6 +6,7 @@ function Servico() {
 
     const [servico, setServico] = useState(
         {
+            id:'',
             cliente:'',
             dataInicio:'',
             dataFim:'',
@@ -18,6 +19,13 @@ function Servico() {
     );
 
     const [servicos, setServicos] = useState([]);
+    const [atualizar, setAtualizar] = useState();
+
+    useEffect(()=>{
+        axios.get("http://localhost:8080/servicos/").then(result=>{
+            setServicos(result.data);
+        })
+    }, [atualizar]);
 
     function handleChange(event){
         setServico({...servico,[event.target.name]:event.target.value})
@@ -26,7 +34,7 @@ function Servico() {
     function handleSubmit(event){
         event.preventDefault();
         axios.post("http://localhost:8080/servicos/", servico).then(result=>{
-            console.log(result);
+            setAtualizar(result);
         });
     }
 
@@ -60,14 +68,6 @@ function Servico() {
                 <label className="form-label">Data do Pagamento</label>
                 <input onChange={handleChange} value={servico.dataPagamento} type="date" className="form-control" placeholder="Data de Pagamento" name="dataPagamento" />
               </div>
-              <div className="col-sm">
-                <label className="form-label">Status</label>
-                <select onChange={handleChange} value={servico.status} class="form-select" aria-label="Default select example" name="status">
-                  <option selected >Pendente</option>
-                  <option value="1">Realizado</option>
-                  <option value="2">Cancelado</option>
-                </select>
-              </div>
               <div className="col-sm-12">
                 <label className="form-label">Descrição</label>
                 <textarea onChange={handleChange} value={servico.descricao} class="form-control" placeholder="Descrição" name="descricao"></textarea>
@@ -81,30 +81,25 @@ function Servico() {
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Descrição</th>
+                <th scope="col">Valor</th>
+                <th scope="col">Status</th>
+                <th scope="col">Opções</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                </tr>
-                <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                </tr>
-                <tr>
-                <th scope="row">3</th>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
-                </tr>
+                {
+                    servicos.map(servico => (
+                        <tr key={servico.id}>
+                            <td>{servico.cliente}</td>
+                            <td>{servico.descricao}</td>
+                            <td>{servico.valor}</td>
+                            <td>{servico.status}</td>
+                            <td></td>
+                        </tr>
+                    ))
+                }     
             </tbody>
         </table>
       </div>
