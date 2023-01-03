@@ -25,16 +25,19 @@ public class ServicoController {
 	private ServicoService servicoService;
 	
 	@GetMapping("/")
+	@CrossOrigin("http://localhost:3000")
 	public List<Servico> getAll() {
 		return servicoService.findAll();
 	}
 	
 	@GetMapping("/pendentes")
+	@CrossOrigin("http://localhost:3000")
 	public List<Servico> getPendentes() {
 		return servicoService.findByStatusPendente();
 	}
 	
 	@GetMapping("/cancelados")
+	@CrossOrigin("http://localhost:3000")
 	public List<Servico> getCancelados() {
 		return servicoService.findByStatusCancelado();
 	}
@@ -46,17 +49,20 @@ public class ServicoController {
 	}
 	
 	@PutMapping("/")
+	@CrossOrigin("http://localhost:3000")
 	public Servico update(@RequestBody Servico servico) {
 		return servicoService.update(servico);
 	}
 	
 	@DeleteMapping("/{id}")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
 		servicoService.delete(id);
 		return ResponseEntity.ok().build();
 	}
 	
 	@PostMapping("/{id}")
+	@CrossOrigin("http://localhost:3000")
 	public ResponseEntity<Void> cancel(@PathVariable("id") Long id) {
 		servicoService.cancel(id);
 		return ResponseEntity.ok().build();
