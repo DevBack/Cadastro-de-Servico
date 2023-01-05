@@ -33,9 +33,16 @@ function Servico() {
 
     function handleSubmit(event){
         event.preventDefault();
-        axios.post("http://localhost:8080/servicos/", servico).then(result=>{
-            setAtualizar(result);
-        });
+        if(servico.id){
+            axios.put("http://localhost:8080/servicos/", servico).then(result=>{
+                setAtualizar(result);
+            });
+        }
+        else {
+            axios.post("http://localhost:8080/servicos/", servico).then(result=>{
+                setAtualizar(result);
+            });
+        }  
     }
 
   return (
@@ -96,7 +103,17 @@ function Servico() {
                             <td>{servico.descricao}</td>
                             <td>{servico.valor}</td>
                             <td>{servico.status}</td>
-                            <td></td>
+                            <td>
+                                {servico.status!='Cancelado' &&
+                                    <button onClick={()=>setServico(servico)} className="btn btn-primary btn-sm">Alterar</button>
+                                }
+                                &nbsp;
+                                {servico.status!='Cancelado' &&
+                                    <button className="btn btn-danger btn-sm">Excluir</button>
+                                }
+                                &nbsp;
+                                <button className="btn btn-warning btn-sm">Cancelar</button>&nbsp;
+                            </td>
                         </tr>
                     ))
                 }     
