@@ -68,6 +68,12 @@ function Servico() {
         });
     }
 
+    function cancel(id){
+        axios.post("http://localhost:8080/servicos/" + id).then(result=>{
+            setAtualizar(result);
+        });
+    }
+
   return (
       
       <div className="container-sm texte-center">
@@ -136,7 +142,9 @@ function Servico() {
                                     <button onClick={()=>remove(servico.id)} className="btn btn-danger btn-sm">Excluir</button>
                                 }
                                 &nbsp;
-                                <button className="btn btn-warning btn-sm">Cancelar</button>&nbsp;
+                                {servico.status!='Cancelado' &&
+                                    <button onClick={()=>cancel(servico.id)} className="btn btn-warning btn-sm">Cancelar</button>
+                                }
                             </td>
                         </tr>
                     ))
