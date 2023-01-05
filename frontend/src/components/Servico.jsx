@@ -42,7 +42,30 @@ function Servico() {
             axios.post("http://localhost:8080/servicos/", servico).then(result=>{
                 setAtualizar(result);
             });
-        }  
+        }
+        formClean();
+    }
+
+    function formClean(){
+        setServico(
+            {
+                id:'',
+                cliente:'',
+                dataInicio:'',
+                dataFim:'',
+                valor:'',
+                valorPago:'',
+                dataPagamento:'',
+                status:'',
+                descricao:''
+            }
+        );
+    }
+
+    function remove(id){
+        axios.delete("http://localhost:8080/servicos/" + id).then(result=>{
+            setAtualizar(result);
+        });
     }
 
   return (
@@ -82,7 +105,8 @@ function Servico() {
               </div> 
           </div>
           </div>
-          <input class="btn btn-success" type="submit" value="Cadastrar" />
+          <input class="btn btn-success" type="submit" value="Cadastrar" />&nbsp;
+          <input onClick={formClean} class="btn btn-secondary" type="button" value="Limpar" />
         </form>
         <hr/><hr/>
         <table class="table table-striped table-hover">
@@ -109,7 +133,7 @@ function Servico() {
                                 }
                                 &nbsp;
                                 {servico.status!='Cancelado' &&
-                                    <button className="btn btn-danger btn-sm">Excluir</button>
+                                    <button onClick={()=>remove(servico.id)} className="btn btn-danger btn-sm">Excluir</button>
                                 }
                                 &nbsp;
                                 <button className="btn btn-warning btn-sm">Cancelar</button>&nbsp;
