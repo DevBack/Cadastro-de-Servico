@@ -22,10 +22,26 @@ function Servico() {
     const [atualizar, setAtualizar] = useState();
 
     useEffect(()=>{
+       getAll();
+    }, [atualizar]);
+
+    function getAll(){
         axios.get("http://localhost:8080/servicos/").then(result=>{
             setServicos(result.data);
-        })
-    }, [atualizar]);
+        });
+    }
+
+    function getPendentes(){
+        axios.get("http://localhost:8080/servicos/pendentes").then(result=>{
+            setServicos(result.data);
+        });
+    }
+
+    function getCancelados(){
+        axios.get("http://localhost:8080/servicos/cancelados").then(result=>{
+            setServicos(result.data);
+        });
+    }
 
     function handleChange(event){
         setServico({...servico,[event.target.name]:event.target.value})
@@ -76,45 +92,52 @@ function Servico() {
 
   return (
       
-      <div className="container-sm texte-center">
-        <form onSubmit={handleSubmit}>
-          <div className="row py-4">
-            <div className="col-sm-7">
-              <label className="form-label">Cliente</label>
-              <input onChange={handleChange} value={servico.cliente} type="text" className="form-control" placeholder="Nome do Cliente" name="cliente" />
+      <div className="container-sm text-center position-relative">
+            <div className="card">
+                <form onSubmit={handleSubmit}>
+                    <div className="row py-4">
+                        <div className="col-sm-6">
+                        <label className="form-label">Cliente</label>
+                        <input onChange={handleChange} value={servico.cliente} type="text" className="form-control" placeholder="Nome do Cliente" name="cliente" />
+                        </div>
+                        <div className="col-sm">
+                        <label className="form-label">Data de Início</label>
+                        <input onChange={handleChange} value={servico.dataInicio} type="date" className="form-control" placeholder="Data de Início" name="dataInicio" />
+                        </div>
+                        <div className="col-sm">
+                        <label className="form-label">Data de Término</label>
+                        <input onChange={handleChange} value={servico.dataFim} type="date" className="form-control" placeholder="Data de Término" name="dataFim" />
+                        </div>
+                    <div className="row g-4">  
+                        <div className="col-sm">
+                            <label className="form-label">Valor</label>
+                            <input onChange={handleChange} value={servico.valor} type="text" className="form-control" placeholder="Valor" name="valor" />
+                        </div>
+                        <div className="col-sm">  
+                            <label className="form-label">Valor Pago</label>
+                            <input onChange={handleChange} value={servico.valorPago} type="text" className="form-control" placeholder="Valor Pago" name="valorPago" />
+                        </div>
+                        <div className="col-sm">
+                            <label className="form-label">Data do Pagamento</label>
+                            <input onChange={handleChange} value={servico.dataPagamento} type="date" className="form-control" placeholder="Data de Pagamento" name="dataPagamento" />
+                        </div>
+                        <div className="col-sm-12">
+                            <label className="form-label">Descrição</label>
+                            <textarea onChange={handleChange} value={servico.descricao} class="form-control" placeholder="Descrição" name="descricao"></textarea>
+                            <br/>
+                        </div> 
+                    </div>
+                </div>
+                <input class="btn btn-success" type="submit" value="Cadastrar" />&nbsp;
+                <input onClick={formClean} class="btn btn-secondary" type="button" value="Limpar" />&nbsp;
+                </form>
             </div>
-            <div className="col-sm">
-              <label className="form-label">Data de Início</label>
-              <input onChange={handleChange} value={servico.dataInicio} type="date" className="form-control" placeholder="Data de Início" name="dataInicio" />
-            </div>
-            <div className="col-sm">
-              <label className="form-label">Data de Término</label>
-              <input onChange={handleChange} value={servico.dataFim} type="date" className="form-control" placeholder="Data de Término" name="dataFim" />
-            </div>
-          <div className="row g-4">  
-              <div className="col-sm">
-                <label className="form-label">Valor</label>
-                <input onChange={handleChange} value={servico.valor} type="text" className="form-control" placeholder="Valor" name="valor" />
-              </div>
-              <div className="col-sm">  
-                <label className="form-label">Valor Pago</label>
-                <input onChange={handleChange} value={servico.valorPago} type="text" className="form-control" placeholder="Valor Pago" name="valorPago" />
-              </div>
-              <div className="col-sm">
-                <label className="form-label">Data do Pagamento</label>
-                <input onChange={handleChange} value={servico.dataPagamento} type="date" className="form-control" placeholder="Data de Pagamento" name="dataPagamento" />
-              </div>
-              <div className="col-sm-12">
-                <label className="form-label">Descrição</label>
-                <textarea onChange={handleChange} value={servico.descricao} class="form-control" placeholder="Descrição" name="descricao"></textarea>
-                <br/>
-              </div> 
-          </div>
-          </div>
-          <input class="btn btn-success" type="submit" value="Cadastrar" />&nbsp;
-          <input onClick={formClean} class="btn btn-secondary" type="button" value="Limpar" />
-        </form>
         <hr/><hr/>
+          <input onClick={getAll} class="btn btn-outline-secondary" type="button" value="Todos" />&nbsp;
+          <input onClick={getPendentes} class="btn btn-outline-danger" type="button" value="Pendentes" />&nbsp;
+          <input onClick={getCancelados} class="btn btn-outline-warning" type="button" value="Cancelados" />&nbsp;
+        <br/>
+        <br/>
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
